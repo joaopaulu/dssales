@@ -1,3 +1,4 @@
+import PieChartCard from 'components/pie-chart-card';
 import './App.css';
 import Filter from './components/filter';
 import Header from './components/header';
@@ -13,6 +14,8 @@ function App() {
         <SalesByDate />
         <div className="sales-overview-container">
           <SalesSummary />
+          <PieChartCard />
+          <PieChartCard />
         </div>
       </div>
     </>
