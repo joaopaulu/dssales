@@ -1,9 +1,22 @@
+import { buildPieChartConfig } from './helpers';
+import ReactApexChart from 'react-apexcharts';
 import './styles.css';
 
-const PieChartCard = () => {
+type Props = {
+  labels: string[];
+  name: string;
+  series: number[];
+};
+
+const PieChartCard = ({ labels, name, series }: Props) => {
   return (
     <div className="pie-chart-card base-card">
-      <h1>PIE Chart</h1>
+      <ReactApexChart
+        options={buildPieChartConfig(labels, name)}
+        type="donut"
+        width="400"
+        series={series}
+      />
     </div>
   );
 };

@@ -20,7 +20,7 @@ export const buildPieChartConfig = (labels: string[] = [], name: string) => {
       show: true,
       floating: false,
       position: 'bottom',
-      offsetY: 30,
+      offsetY: 0,
       labels: {
         colors: ['#b4bed2']
       },
