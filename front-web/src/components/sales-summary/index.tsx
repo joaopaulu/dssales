@@ -1,7 +1,7 @@
-import { ReactComponent as AvatarIcon } from 'assets/images/avatar-icon.svg';
-import { ReactComponent as BarChartIcon } from 'assets/images/bar-chart-icon.svg';
-import { ReactComponent as DoneIcon } from 'assets/images/done-icon.svg';
-import { ReactComponent as SyncIcon } from 'assets/images/sync-icon.svg';
+import { ReactComponent as AvatarIcon } from 'core/assets/images/avatar-icon.svg';
+import { ReactComponent as BarChartIcon } from 'core/assets/images/bar-chart-icon.svg';
+import { ReactComponent as DoneIcon } from 'core/assets/images/done-icon.svg';
+import { ReactComponent as SyncIcon } from 'core/assets/images/sync-icon.svg';
 import SalesSummaryCard from './sales-summary-card';
 import './styles.css';
 
