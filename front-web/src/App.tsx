@@ -1,8 +1,10 @@
 import PieChartCard from 'components/pie-chart-card';
 import SalesByDateComponent from 'components/sales-by-date';
 import SalesTable from 'components/sales-table';
-import { FilterData } from 'core/utils/types';
-import { useState } from 'react';
+import { buildSalesByPaymentMethod, buildSalesByStoreChart } from 'core/utils/helpers';
+import { buildFilterParams, makeRequest } from 'core/utils/request';
+import { FilterData, PieChartConfig, SalesByPaymentMethod, SalesByStore } from 'core/utils/types';
+import { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import Filter from './components/filter';
 import Header from './components/header';
@@ -10,6 +12,34 @@ import SalesSummary from './components/sales-summary';
 
 function App() {
   const [filterData, setFilterData] = useState<FilterData>();
+  const [salesByStore, setSalesByStore] = useState<PieChartConfig>();
+  const [salesByPaymentMethod, setSalesByPaymentMethod] = useState<PieChartConfig>();
+
+  const params = useMemo(() => buildFilterParams(filterData), [filterData]);
+
+  useEffect(() => {
+    makeRequest
+      .get<SalesByStore[]>('/sales/by-store', { params })
+      .then((response) => {
+        const newSalesByStore = buildSalesByStoreChart(response.data);
+        setSalesByStore(newSalesByStore);
+      })
+      .catch(() => {
+        console.error('Error to fetch sales by date');
+      });
+  }, [params]);
+
+  useEffect(() => {
+    makeRequest
+      .get<SalesByPaymentMethod[]>('/sales/by-payment-method', { params })
+      .then((response) => {
+        const newSalesByPaymentMethod = buildSalesByPaymentMethod(response.data);
+        setSalesByPaymentMethod(newSalesByPaymentMethod);
+      })
+      .catch(() => {
+        console.error('Error to fetch sales by date');
+      });
+  }, [params]);
 
   const onFilterChange = (filter: FilterData) => {
     setFilterData(filter);
@@ -23,15 +53,11 @@ function App() {
         <SalesByDateComponent filterData={filterData} />
         <div className="sales-overview-container">
           <SalesSummary filterData={filterData} />
-          <PieChartCard
-            name="Lojas"
-            labels={['Brasília', 'Rio', 'São Paulo']}
-            series={[40, 30, 60]}
-          />
+          <PieChartCard name="Lojas" labels={salesByStore?.labels} series={salesByStore?.series} />
           <PieChartCard
             name="Pagamento"
-            labels={['Crédito', 'Débito', 'Dinheiro']}
-            series={[20, 60, 80]}
+            labels={salesByPaymentMethod?.labels}
+            series={salesByPaymentMethod?.series}
           />
         </div>
         <SalesTable />
